@@ -10,12 +10,12 @@ The full running deployed version of this software is available in the "LearnDep
 The full source codes for the respective libraries are in the respective libraries.
 
 # Logs
+2021/08/09: Added learnappjumbling v1.0.0
 2021/07/29: The first release version.
 
 # Directories
 1. development -> development folder of libraries for learn.
 2. learn       -> deployment folder of this software.
-
 
 # Libraries under GPL-3.0-or-later
 1. learn
