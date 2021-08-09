@@ -20,11 +20,12 @@ The full source codes for the respective libraries are in the respective librari
 # Libraries under GPL-3.0-or-later
 1. learn
 2. learnappfilling
-3. learnapprecognizing
-4. learnappspelling
-5. learnappsselection
-6. learnlibrarycustomwidgets
-7. learnlibraryfunctions
+3. learnappjumbling
+4. learnapprecognizing
+5. learnappspelling
+6. learnappsselection
+7. learnlibrarycustomwidgets
+8. learnlibraryfunctions
 
 # Libraries under LGPL-3.0-or-later
 1. genericlibrarymaths -> Can be found at https://github.com/JohnathonLeong/genericlibrary
