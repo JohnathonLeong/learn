@@ -28,9 +28,9 @@ How to update libraries.
 
 
 # Logs
-2021/08/10: Updated learnappsselection v1.0.1
-2021/08/09: Added learnappjumbling v1.0.0
-2021/07/29: The first release version.
+2021/08/10: Updated learnappsselection v1.0.1  
+2021/08/09: Added learnappjumbling v1.0.0  
+2021/07/29: The first release version.  
 
 # Directories
 1. development -> development folder of libraries for learn.
