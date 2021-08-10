@@ -19,6 +19,11 @@
  *
  * Note:
  *
+ * Version:     1.0.1
+ * Date:        2021/08/10 (YYYY/MM/DD)
+ * Change Log:  1. Updated the application selection page to include more applications
+ *              2. Included a "Read Me" and a "About" selection to describe this software more.
+ *
  * Version:     1.0.0
  * Date:        2021/07/29 (YYYY/MM/DD)
  * Change Log:  1. First release of learnappsselection.
@@ -31,27 +36,25 @@
 #include <QMessageBox>
 
 #include "learnappfilling.h"
+#include "learnappjumbling.h"
 #include "learnapprecognizing.h"
 #include "learnappspelling.h"
 
 #define LEARNAPPSSELECTION_VERSION_MAJOR 1
 #define LEARNAPPSSELECTION_VERSION_MINOR 0
-#define LEARNAPPSSELECTION_VERSION_PATCH 0
+#define LEARNAPPSSELECTION_VERSION_PATCH 1
 
 /**
  * @brief learnappsselection - Overloaded constructor.
  * @param parent           - QWidget parent pointer.
  */
 learnappsselection::learnappsselection(QWidget * parent) : QWidget(parent) {
-  initWidget();
   initAttributes();
+  initWidget();
 
   if (QDir("./pictures").exists() == false) {
     QDir().mkdir("./pictures");
-    QMessageBox msgBox;
-    msgBox.setText("Please places \"jpg\" images into the \"pictures\" folder to use this program.\n"
-                   "In order for this program to work properly, please name the images used accordingly.");
-    msgBox.exec();
+    readme();
   }
 
   for (unsigned char i = 0; i < LEARNAPPSSELECTION_APPS_TOTAL_NUM; i++)
@@ -69,10 +72,55 @@ learnappsselection::~learnappsselection() {
     delete mpSelectedApp;
 }
 
+
+void learnappsselection::about(void ) {
+  QString msgBoxmsg;
+  unsigned long major = 0;
+  unsigned long minor = 0;
+  unsigned long patch = 0;
+
+  learnappsselection_version(major, minor, patch);
+  msgBoxmsg.append("Learn: v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch) + "\n\n");
+
+  for (unsigned char i = 0; i < LEARNAPPSSELECTION_APPS_AVAILABLE; i++) {
+    switch (i) {
+    case 0:
+      learnappfilling_version(major, minor, patch);
+      break;
+
+    case 1:
+      learnappjumbling_version(major, minor, patch);
+      break;
+
+    case 2:
+      learnapprecognizing_version(major, minor, patch);
+      break;
+
+    case 3:
+      learnappspelling_version(major, minor, patch);
+      break;
+
+    default:
+      break;
+
+    }
+    msgBoxmsg.append(mAppsNames.at(i) + ": v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch) + "\n");
+  }
+
+  QMessageBox msgBox;
+  msgBox.setWindowTitle("LEARN - About");
+  msgBox.setText(msgBoxmsg);
+  msgBox.exec();
+}
+
 /**
  * @brief initAttributes - Initialization of the class attributes.
  */
 void learnappsselection::initAttributes(void ) {
+  mAppsNames.append("Filling");
+  mAppsNames.append("Jumbling");
+  mAppsNames.append("Recognizing");
+  mAppsNames.append("Spelling");
 }
 
 /**
@@ -99,16 +147,32 @@ void learnappsselection::initWidget(void ) {
     yIndex = yIndex + height + spacer;
     rowIndex += LEARNAPPSSELECTION_APPS_COL_NUM;
   }
-  mpApps[0]->setText("Spelling");
-  mpApps[1]->setText("Recognizing");
-  mpApps[2]->setText("Filling");
-  for (unsigned char i = 0; i < LEARNAPPSSELECTION_APPS_AVAILABLE; i++)
+
+  for (unsigned char i = 0; i < LEARNAPPSSELECTION_APPS_AVAILABLE; i++) {
+    mpApps[i]->setText(mAppsNames.at(i));
     mpApps[i]->show();
+  }
+
+  mpApps[22]->setText("Read Me");
+  mpApps[22]->show();
+  mpApps[23]->setText("About");
+  mpApps[23]->show();
 
   mpDisplayApps->resize(mpApps[LEARNAPPSSELECTION_APPS_TOTAL_NUM - 1]->x() + width + spacer, mpApps[LEARNAPPSSELECTION_APPS_TOTAL_NUM - 1]->y() + height + spacer);
   this->resize(mpDisplayApps->width(), mpDisplayApps->height());
 
   mpSelectedApp = nullptr;
+}
+
+void learnappsselection::readme(void ) {
+  QMessageBox msgBox;
+  msgBox.setWindowTitle("LEARN - Read Me");
+  msgBox.setText("Please place \"jpg\" images into the \"pictures\" folder as\n"
+                 "to be used as the questions in some of the applications in\n"
+                 "this program.\n\n"
+                 "In order for the applications to work properly, please name\n"
+                 "the images used accordingly.");
+  msgBox.exec();
 }
 
 /**
@@ -118,20 +182,33 @@ void learnappsselection::slot_mpAppsSelect() {
   QPushButton * pbSelect = (QPushButton *)sender();
 
   if (pbSelect->text() != "") {
-    mpDisplayApps->hide();
-    if (pbSelect->text() == "Recognizing") {
-      mpSelectedApp = new learnapprecognizing(this);
+    if (pbSelect->text() == "Read Me") {
+      readme();
     }
-    else if(pbSelect->text() == "Spelling") {
-      mpSelectedApp = new learnappspelling(this);
+    else if (pbSelect->text() == "About") {
+      about();
     }
-    else if(pbSelect->text() == "Filling") {
-      mpSelectedApp = new learnappfilling(this);
+    else {
+      if (pbSelect->text() == "Filling") {
+        mpSelectedApp = new learnappfilling(this);
+      }
+      else if(pbSelect->text() == "Jumbling") {
+        mpSelectedApp = new learnappjumbling(this);
+      }
+      else if(pbSelect->text() == "Recognizing") {
+        mpSelectedApp = new learnapprecognizing(this);
+      }
+      else if(pbSelect->text() == "Spelling") {
+        mpSelectedApp = new learnappspelling(this);
+      }
+      if (mpSelectedApp != NULL) {
+        mpSelectedApp->show();
+        mpDisplayApps->hide();
+        connect(mpSelectedApp, SIGNAL(signal_Close()), this, SLOT(slot_mpSelectedAppClose()));
+        this->resize(mpSelectedApp->width(), mpSelectedApp->height());
+        emit signal_Resize(mpSelectedApp->width(), mpSelectedApp->height());
+      }
     }
-    mpSelectedApp->show();
-    connect(mpSelectedApp, SIGNAL(signal_Close()), this, SLOT(slot_mpSelectedAppClose()));
-    this->resize(mpSelectedApp->width(), mpSelectedApp->height());
-    emit signal_Resize(mpSelectedApp->width(), mpSelectedApp->height());
   }
 }
 

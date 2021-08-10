@@ -42,8 +42,8 @@ unix {
 !isEmpty(target.path): INSTALLS += target
 
 LIBS += -L$$PWD/../libs/
-win32:CONFIG(release, debug|release): LIBS += -llearnappfilling -llearnapprecognizing -llearnappspelling
-else:win32:CONFIG(debug, debug|release): LIBS += -llearnappfilling_debug -llearnapprecognizing_debug -llearnappspelling_debug
+win32:CONFIG(release, debug|release): LIBS += -llearnappfilling -llearnapprecognizing -llearnappspelling -llearnappjumbling
+else:win32:CONFIG(debug, debug|release): LIBS += -llearnappfilling_debug -llearnapprecognizing_debug -llearnappspelling_debug -llearnappjumbling_debug
 else:unix: LIBS += -llearnappfilling -llearnapprecognizing -llearnappspelling
 
 INCLUDEPATH += $$PWD/../libs/

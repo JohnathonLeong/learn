@@ -19,6 +19,11 @@
  *
  * Note:
  *
+ * Version:     1.0.1
+ * Date:        2021/08/10 (YYYY/MM/DD)
+ * Change Log:  1. Updated the application selection page to include more applications
+ *              2. Included a "Read Me" and a "About" selection to describe this software more.
+ *
  * Version:     1.0.0
  * Date:        2021/07/29 (YYYY/MM/DD)
  * Change Log:  1. First release of learnappsselection.
@@ -42,7 +47,7 @@
 #define LEARNAPPSSELECTION_APPS_ROW_NUM 4
 #define LEARNAPPSSELECTION_APPS_COL_NUM 6
 #define LEARNAPPSSELECTION_APPS_TOTAL_NUM LEARNAPPSSELECTION_APPS_ROW_NUM * LEARNAPPSSELECTION_APPS_COL_NUM
-#define LEARNAPPSSELECTION_APPS_AVAILABLE 3
+#define LEARNAPPSSELECTION_APPS_AVAILABLE 4
 
 class LEARNAPPSSELECTION_EXPORT learnappsselection : public QWidget {
   Q_OBJECT
@@ -65,6 +70,8 @@ signals:
   void signal_Resize(int width, int height);
 
 private:
+  void about(void );
+
   /**
    * @brief initAttributes - Initialization of the class attributes.
    */
@@ -74,6 +81,10 @@ private:
    * @brief initWidget - Initialization of the class widgets.
    */
   void initWidget(void );
+
+  void readme(void );
+
+  QStringList mAppsNames;
 
   /**
    * @brief mpApps - QPushButton widget for learn apps selection.
