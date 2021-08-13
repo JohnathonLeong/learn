@@ -19,6 +19,13 @@
  *
  * Note:
  *
+ * Version:     1.0.1
+ * Date:        2021/08/13 (YYYY/MM/DD)
+ * Change Log:  1. Rename the function
+ *                   learnlibraryquestiongenerator_version
+ *                 to
+ *                    learnlibraryfunctions_version
+ *
  * Version:     1.0.0
  * Date:        2021/07/29 (YYYY/MM/DD)
  * Change Log:  1. First release of learnlibraryfunctions.
@@ -32,7 +39,7 @@
 
 #define LEARNLIBRARYFUNCTIONS_VERSION_MAJOR 1
 #define LEARNLIBRARYFUNCTIONS_VERSION_MINOR 0
-#define LEARNLIBRARYFUNCTIONS_VERSION_PATCH 0
+#define LEARNLIBRARYFUNCTIONS_VERSION_PATCH 1
 
 /**
  * @brief learnlibraryquestiongenerator - Default constructor.
@@ -150,12 +157,12 @@ unsigned char learnlibraryquestiongenerator::setImagePath(QString path) {
 }
 
 /**
- * @brief learnlibraryquestiongenerator_version - Check the version of this library
- * @param major                                 - Major version number.
- * @param minor                                 - Minor version number.
- * @param patch                                 - Patch version number.
+ * @brief learnlibraryfunctions_version - Check the version of this library
+ * @param major                         - Major version number.
+ * @param minor                         - Minor version number.
+ * @param patch                         - Patch version number.
  */
-void learnlibraryquestiongenerator_version(unsigned long & major, unsigned long & minor, unsigned long & patch) {
+void learnlibraryfunctions_version(unsigned long & major, unsigned long & minor, unsigned long & patch) {
   major = LEARNLIBRARYFUNCTIONS_VERSION_MAJOR;
   minor = LEARNLIBRARYFUNCTIONS_VERSION_MINOR;
   patch = LEARNLIBRARYFUNCTIONS_VERSION_PATCH;
