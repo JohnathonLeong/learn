@@ -19,8 +19,12 @@
  *
  * Note:
  *
+ * Version:     1.0.3
+ * Date:        2021/08/13 (YYYY/MM/DD)
+ * Change Log:  1. Updated codes due to newer version of "learnlibraryfunctions.dll"
+ *
  * Version:     1.0.2
- * Date:        2021/08/11 (YYYY/MM/DD)
+ * Date:        2021/08/13 (YYYY/MM/DD)
  * Change Log:  1. Updated the "Read Me" and the "About" details.
  *
  * Version:     1.0.1

@@ -19,8 +19,12 @@
  *
  * Note:
  *
+ * Version:     1.0.3
+ * Date:        2021/08/13 (YYYY/MM/DD)
+ * Change Log:  1. Updated codes due to newer version of "learnlibraryfunctions.dll"
+ *
  * Version:     1.0.2
- * Date:        2021/08/11 (YYYY/MM/DD)
+ * Date:        2021/08/13 (YYYY/MM/DD)
  * Change Log:  1. Updated the "Read Me" and the "About" details.
  *              2. Added a feature for the "About" to save its content.
  *
@@ -182,7 +186,7 @@ void learnappsselection::initAttributes(void ) {
   mMessageBoxMsg.append("genericlibrarymaths.dll : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
   learnlibrarycustomwidgets_version(major, minor, patch);
   mMessageBoxMsg.append("learnlibrarycustomwidgets.dll : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
-  learnlibraryquestiongenerator_version(major, minor, patch);
+  learnlibraryfunctions_version(major, minor, patch);
   mMessageBoxMsg.append("learnlibraryfunctions.dll : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
 }
 
