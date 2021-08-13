@@ -2,9 +2,9 @@ QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-#TEMPLATE = app
-TEMPLATE = lib
-DEFINES += LEARNAPPSSELECTION_LIBRARY
+TEMPLATE = app
+#TEMPLATE = lib
+#DEFINES += LEARNAPPSSELECTION_LIBRARY
 
 win32:CONFIG(release, debug|release): TARGET = learnappsselection
 else:win32:CONFIG(debug, debug|release): TARGET = learnappsselection_debug
@@ -42,10 +42,27 @@ unix {
 !isEmpty(target.path): INSTALLS += target
 
 LIBS += -L$$PWD/../libs/
-win32:CONFIG(release, debug|release): LIBS += -llearnappfilling -llearnapprecognizing -llearnappspelling -llearnappjumbling
-else:win32:CONFIG(debug, debug|release): LIBS += -llearnappfilling_debug -llearnapprecognizing_debug -llearnappspelling_debug -llearnappjumbling_debug
-else:unix: LIBS += -llearnappfilling -llearnapprecognizing -llearnappspelling
-
+win32:CONFIG(release, debug|release): LIBS += -llearnappfilling \
+    -llearnapprecognizing \
+    -llearnappspelling \
+    -llearnappjumbling \
+    -lgenericlibrarymaths \
+    -llearnlibrarycustomwidgets \
+    -llearnlibraryfunctions
+else:win32:CONFIG(debug, debug|release): LIBS += -llearnappfilling_debug \
+    -llearnapprecognizing_debug \
+    -llearnappspelling_debug \
+    -llearnappjumbling_debug \
+    -lgenericlibrarymaths_debug \
+    -llearnlibrarycustomwidgets_debug \
+    -llearnlibraryfunctions_debug
+else:unix: LIBS += -llearnappfilling \
+    -llearnapprecognizing \
+    -llearnappspelling \
+    -llearnappjumbling \
+    -lgenericlibrarymaths \
+    -llearnlibrarycustomwidgets \
+    -llearnlibraryfunctions
 INCLUDEPATH += $$PWD/../libs/
 DEPENDPATH += $$PWD/../libs/
 INCLUDEPATH += $$PWD/../includes/

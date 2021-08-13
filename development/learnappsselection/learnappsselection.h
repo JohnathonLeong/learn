@@ -19,6 +19,10 @@
  *
  * Note:
  *
+ * Version:     1.0.2
+ * Date:        2021/08/11 (YYYY/MM/DD)
+ * Change Log:  1. Updated the "Read Me" and the "About" details.
+ *
  * Version:     1.0.1
  * Date:        2021/08/10 (YYYY/MM/DD)
  * Change Log:  1. Updated the application selection page to include more applications
@@ -41,8 +45,9 @@
 #  define LEARNAPPSSELECTION_EXPORT
 #endif
 
-#include <QWidget>
+#include <QMessageBox>
 #include <QPushButton>
+#include <QWidget>
 
 #define LEARNAPPSSELECTION_APPS_ROW_NUM 4
 #define LEARNAPPSSELECTION_APPS_COL_NUM 6
@@ -70,7 +75,20 @@ signals:
   void signal_Resize(int width, int height);
 
 private:
+  /**
+   * @brief readme - Generate content for About
+   */
   void about(void );
+
+  /**
+   * @brief generateAboutMessage - Generate About message.
+   * @param message              - The QStringList message to be generated into a QString message.
+   * @param type                 - The type of message to be generated.
+   *                               0 -> QString message for QMessageBox.
+   *                               1 -> QString message for file.
+   * @return                     - The generated message.
+   */
+  QString generateAboutMessage(QStringList message, unsigned char type = 0);
 
   /**
    * @brief initAttributes - Initialization of the class attributes.
@@ -82,9 +100,24 @@ private:
    */
   void initWidget(void );
 
+  /**
+   * @brief readme - Generate content for Read Me
+   */
   void readme(void );
 
+  /**
+   * @brief mAppsNames - Stores the applications name
+   */
   QStringList mAppsNames;
+
+  /**
+   * @brief mAppsLibrariesNames - Stores the applications libraries names
+   */
+  QStringList mAppsLibrariesNames;
+
+//  QMessageBox * mpMessageBoxAbout;
+
+  QStringList     mMessageBoxMsg;
 
   /**
    * @brief mpApps - QPushButton widget for learn apps selection.

@@ -19,6 +19,11 @@
  *
  * Note:
  *
+ * Version:     1.0.2
+ * Date:        2021/08/11 (YYYY/MM/DD)
+ * Change Log:  1. Updated the "Read Me" and the "About" details.
+ *              2. Added a feature for the "About" to save its content.
+ *
  * Version:     1.0.1
  * Date:        2021/08/10 (YYYY/MM/DD)
  * Change Log:  1. Updated the application selection page to include more applications
@@ -33,16 +38,18 @@
 #include "learnappsselection.h"
 
 #include <QDir>
-#include <QMessageBox>
 
+#include "genericlibrarymaths.h"
 #include "learnappfilling.h"
 #include "learnappjumbling.h"
 #include "learnapprecognizing.h"
 #include "learnappspelling.h"
+#include "learnlibrarycustomwidgets.h"
+#include "learnlibraryfunctions.h"
 
 #define LEARNAPPSSELECTION_VERSION_MAJOR 1
 #define LEARNAPPSSELECTION_VERSION_MINOR 0
-#define LEARNAPPSSELECTION_VERSION_PATCH 1
+#define LEARNAPPSSELECTION_VERSION_PATCH 2
 
 /**
  * @brief learnappsselection - Overloaded constructor.
@@ -72,55 +79,111 @@ learnappsselection::~learnappsselection() {
     delete mpSelectedApp;
 }
 
-
+/**
+ * @brief readme - Generate content for About
+ */
 void learnappsselection::about(void ) {
-  QString msgBoxmsg;
-  unsigned long major = 0;
-  unsigned long minor = 0;
-  unsigned long patch = 0;
+  QStringList message = mMessageBoxMsg;
+  message.append("----------------------------------------------------");
+  message.append("Click on \"Save\" to save this \"About\" content to this folder.");
 
-  learnappsselection_version(major, minor, patch);
-  msgBoxmsg.append("Learn: v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch) + "\n\n");
+  QMessageBox mpMessageBoxAbout;
+  mpMessageBoxAbout.setTextFormat(Qt::RichText);
+  mpMessageBoxAbout.setFont(QFont("Courier"));
+  mpMessageBoxAbout.setWindowTitle("LEARN - About");
+  mpMessageBoxAbout.setText(generateAboutMessage(message));
+  mpMessageBoxAbout.setStandardButtons(QMessageBox::Save | QMessageBox::Ok);
+  mpMessageBoxAbout.setDefaultButton(QMessageBox::Ok);
 
-  for (unsigned char i = 0; i < LEARNAPPSSELECTION_APPS_AVAILABLE; i++) {
-    switch (i) {
-    case 0:
-      learnappfilling_version(major, minor, patch);
-      break;
-
-    case 1:
-      learnappjumbling_version(major, minor, patch);
-      break;
-
-    case 2:
-      learnapprecognizing_version(major, minor, patch);
-      break;
-
-    case 3:
-      learnappspelling_version(major, minor, patch);
-      break;
-
-    default:
-      break;
-
+  int buttonClicked = mpMessageBoxAbout.exec();
+  if (buttonClicked == QMessageBox::Save) {
+    QString message = generateAboutMessage(mMessageBoxMsg, 1);
+    FILE * ptr = fopen("./About.txt", "w");
+    if (ptr != NULL) {
+      fprintf(ptr, "%s", message.toStdString().c_str());
+      fclose(ptr);
     }
-    msgBoxmsg.append(mAppsNames.at(i) + ": v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch) + "\n");
+  }
+}
+
+/**
+ * @brief generateAboutMessage - Generate About message.
+ * @param message              - The QStringList message to be generated into a QString message.
+ * @param type                 - The type of message to be generated.
+ *                               0 -> QString message for QMessageBox.
+ *                               1 -> QString message for file.
+ * @return                     - The generated message.
+ */
+QString learnappsselection::generateAboutMessage(QStringList message, unsigned char type) {
+  QString msg;
+  if (type > 1)
+    type = 0;
+
+  QString space   = type == 0 ? "&nbsp;" : " ";
+  QString newline = type == 0 ? "<br>"   : "\n";
+
+  for (int i = 0; i < message.length(); i++) {
+    if (message.at(i) == "----------------------------------------------------") {
+      msg.append(newline + message.at(i) + space + space + space + space + space + newline + newline);
+    }
+    else if (message.at(i) == "Main application libraries:") {
+      msg.append(message.at(i) + newline + newline);
+    }
+    else if (message.at(i) == "Supporting libraries:") {
+      msg.append(message.at(i) + newline + newline);
+    }
+    else {
+      msg.append(message.at(i) + newline);
+    }
   }
 
-  QMessageBox msgBox;
-  msgBox.setWindowTitle("LEARN - About");
-  msgBox.setText(msgBoxmsg);
-  msgBox.exec();
+  return msg;
 }
 
 /**
  * @brief initAttributes - Initialization of the class attributes.
  */
 void learnappsselection::initAttributes(void ) {
+  mAppsNames.append("Learn");
   mAppsNames.append("Filling");
   mAppsNames.append("Jumbling");
   mAppsNames.append("Recognizing");
   mAppsNames.append("Spelling");
+
+  mAppsLibrariesNames.append("learnappsselection");
+  mAppsLibrariesNames.append("learnappfilling");
+  mAppsLibrariesNames.append("learnappjumbling");
+  mAppsLibrariesNames.append("learnapprecognizing");
+  mAppsLibrariesNames.append("learnappspelling");
+
+
+  unsigned long major = 0;
+  unsigned long minor = 0;
+  unsigned long patch = 0;
+
+  mMessageBoxMsg.append("Developer: Johnathon Leong");
+  mMessageBoxMsg.append("Copyright: © 2021");
+  mMessageBoxMsg.append("Downloads: github.com/JohnathonLeong/learn");
+  mMessageBoxMsg.append("----------------------------------------------------");
+  mMessageBoxMsg.append("Main application libraries:");
+  learnappsselection_version(major, minor, patch);
+  mMessageBoxMsg.append(mAppsNames.at(0) + " (" + mAppsLibrariesNames.at(0) + ".dll) : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
+  learnappfilling_version(major, minor, patch);
+  mMessageBoxMsg.append(mAppsNames.at(1) + " (" + mAppsLibrariesNames.at(1) + ".dll) : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
+  learnappjumbling_version(major, minor, patch);
+  mMessageBoxMsg.append(mAppsNames.at(2) + " (" + mAppsLibrariesNames.at(2) + ".dll) : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
+  learnapprecognizing_version(major, minor, patch);
+  mMessageBoxMsg.append(mAppsNames.at(3) + " (" + mAppsLibrariesNames.at(3) + ".dll) : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
+  learnappspelling_version(major, minor, patch);
+  mMessageBoxMsg.append(mAppsNames.at(4) + " (" + mAppsLibrariesNames.at(4) + ".dll) : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
+  mMessageBoxMsg.append("----------------------------------------------------");
+  mMessageBoxMsg.append("Supporting libraries:");
+  genericlibrarymaths_version(major, minor, patch);
+  mMessageBoxMsg.append("genericlibrarymaths.dll : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
+  learnlibrarycustomwidgets_version(major, minor, patch);
+  mMessageBoxMsg.append("learnlibrarycustomwidgets.dll : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
+  learnlibraryquestiongenerator_version(major, minor, patch);
+  mMessageBoxMsg.append("learnlibraryfunctions.dll : v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch));
 }
 
 /**
@@ -149,7 +212,7 @@ void learnappsselection::initWidget(void ) {
   }
 
   for (unsigned char i = 0; i < LEARNAPPSSELECTION_APPS_AVAILABLE; i++) {
-    mpApps[i]->setText(mAppsNames.at(i));
+    mpApps[i]->setText(mAppsNames.at(i + 1));
     mpApps[i]->show();
   }
 
@@ -164,14 +227,15 @@ void learnappsselection::initWidget(void ) {
   mpSelectedApp = nullptr;
 }
 
+/**
+ * @brief readme - Generate content for Read Me
+ */
 void learnappsselection::readme(void ) {
   QMessageBox msgBox;
+  msgBox.setFont(QFont("Courier"));
   msgBox.setWindowTitle("LEARN - Read Me");
-  msgBox.setText("Please place \"jpg\" images into the \"pictures\" folder as\n"
-                 "to be used as the questions in some of the applications in\n"
-                 "this program.\n\n"
-                 "In order for the applications to work properly, please name\n"
-                 "the images used accordingly.");
+  msgBox.setText("Please place \"jpg\" images into the \"pictures\" folder to be used as the questions in some of the applications in this program.\n\n"
+                 "In order for the applications to work properly, please name the images used accordingly.");
   msgBox.exec();
 }
 
